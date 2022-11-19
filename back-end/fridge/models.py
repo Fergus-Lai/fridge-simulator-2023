@@ -17,20 +17,20 @@ from django.db import models
 
 class User(models.Model):
     id = models.CharField(max_length=200,primary_key=True)
-    name = models.TextField()
+    name = models.CharField(max_length=20)
 
 
 class Freezer_Item(models.Model):
     id = models.CharField(max_length=200,primary_key=True)
-    name = models.TextField()
-    type = models.TextField()
+    name = models.CharField(max_length=20)
+    type = models.CharField(max_length=20)
     exp_date = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Fridge_Item(models.Model):
     id = models.CharField(max_length=200,primary_key=True)
-    name = models.TextField()
-    type = models.TextField()
+    name = models.CharField(max_length=20)
+    type = models.CharField(max_length=20)
     exp_date = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)

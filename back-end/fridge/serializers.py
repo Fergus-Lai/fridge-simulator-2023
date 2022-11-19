@@ -1,13 +1,19 @@
-from django.contrib.auth.models import User, Group
+from fridge.models import User, Freezer_Item, Fridge_Item
 from rest_framework import serializers
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'groups']
+        fields = ['id', 'name']
+    
 
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
+class FridgeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Group
-        fields = ['url', 'name']
+        model = Fridge_Item
+        fields = ['id', 'name', 'type', 'exp_date','user']
+
+
+class FreezerSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Freezer_Item
+        fields = ['id', 'name', 'type', 'exp_date','user']
