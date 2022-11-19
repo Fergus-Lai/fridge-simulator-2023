@@ -6,7 +6,7 @@ from fridge.serializers import UserSerializer, FreezerSerializer, FridgeSerializ
 from uuid import uuid4
 
 # TODO: Delete method for user
-# TODO: GET, POST, PUT for Freezer Items and Fridge Items
+# TODO: GET, POST, PUT, DELETE for Freezer Items and Fridge Items
 
 @csrf_exempt
 def user(request):
@@ -33,4 +33,18 @@ def user(request):
             serializer.save()
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)
+
+@csrf_exempt
+def fridge(request):
+    data = JSONParser().parse(request)
+    
+    try:
+        user = User.objects.get(pk=data["id"])
+    except User.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == "GET":
+        items = Fridge_Item.objects.filter(user=user).values().order_by("exp_date")
+        results = {k: v for k, v in enumerate(items)}
+        return JsonResponse(results)
     

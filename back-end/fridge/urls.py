@@ -6,5 +6,5 @@ from fridge import views
 urlpatterns = [
     path('user/', views.user),
     # path('freezer/',views.freezer)
-    # path('fridge/',views.fridge)
+    path('fridge/',views.fridge)
 ]
