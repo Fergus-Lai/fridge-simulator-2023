@@ -21,6 +21,7 @@ public class ShelfScript : MonoBehaviour, IPointerClickHandler
     {
         if (!isExtended)
         {
+            JSBindings.AddItem("test");
             cameraController.target = this.gameObject;
             cameraController.direction = ViewDirection.Top;
             isExtended = true;
