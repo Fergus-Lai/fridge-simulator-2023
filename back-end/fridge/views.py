@@ -37,7 +37,7 @@ def user(request):
 @csrf_exempt
 def fridge(request):
     data = JSONParser().parse(request)
-    
+
     try:
         user = User.objects.get(pk=data["id"])
     except User.DoesNotExist:
@@ -47,4 +47,52 @@ def fridge(request):
         items = Fridge_Item.objects.filter(user=user).values().order_by("exp_date")
         results = {k: v for k, v in enumerate(items)}
         return JsonResponse(results)
-    
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = FridgeSerializer(fridge, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == "POST":
+        id = uuid4()
+        data["id"] = str(id)
+        serializer = FridgeSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+
+@csrf_exempt
+def freezer(request):
+    data = JSONParser().parse(request)
+
+    try:
+        user = User.objects.get(pk=data["id"])
+    except User.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == "GET":
+        items = Freezer_Item.objects.filter(user=user).values().order_by("exp_date")
+        results = {k: v for k, v in enumerate(items)}
+        return JsonResponse(results)
+
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = FreezerSerializer(freezer, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == "POST":
+        id = uuid4()
+        data["id"] = str(id)
+        serializer = FreezerSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
