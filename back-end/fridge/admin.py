@@ -14,6 +14,6 @@
 
 from django.contrib import admin
 
-from .models import Question
+from .models import User, Fridge_Item, Freezer_Item
 
-admin.site.register(Question)
+admin.site.register(User)
