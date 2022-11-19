@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+.unity-canvas
+{
+  width: 100% !important;
+  height: 100%;
+}

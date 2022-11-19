@@ -228,3 +228,51 @@ $RECYCLE.BIN/
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
+fridge-unity/[Ll]ibrary/
+fridge-unity/[Tt]emp/
+fridge-unity/[Oo]bj/
+fridge-unity/[Bb]uild/
+fridge-unity/[Bb]uilds/
+fridge-unity/[Ll]ogs/
+fridge-unity/[Uu]ser[Ss]ettings/
+
+fridge-unity/ExportedObj/
+fridge-unity/.consulo/
+fridge-unity/*.csproj
+fridge-unity/*.unityproj
+fridge-unity/*.sln
+fridge-unity/*.suo
+fridge-unity/*.tmp
+fridge-unity/*.user
+fridge-unity/*.userprefs
+fridge-unity/*.pidb
+fridge-unity/*.booproj
+fridge-unity/*.svd
+fridge-unity/*.pdb
+fridge-unity/*.mdb
+fridge-unity/*.opendb
+fridge-unity/*.VC.db
+
+# Unity3D generated meta files
+fridge-unity/*.pidb.meta
+fridge-unity/*.pdb.meta
+fridge-unity/*.mdb.meta
+
+# Unity3D generated file on crash reports
+fridge-unity/*/sysinfo.txt
+
+fridge-unity/# Builds
+fridge-unity/*.apk
+fridge-unity/*.aab
+fridge-unity/*.unitypackage
+fridge-unity/*.app
+
+# Crashlytics generated file
+fridge-unity/crashlytics-build.properties
+
+# Packed Addressables
+fridge-unity/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+
+# Temporary auto-generated Android Assets
+fridge-unity/[Aa]ssets/[Ss]treamingAssets/aa.meta
+fridge-unity/[Aa]ssets/[Ss]treamingAssets/aa/*
