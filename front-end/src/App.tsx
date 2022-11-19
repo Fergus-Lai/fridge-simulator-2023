@@ -8,13 +8,7 @@ import { Info } from "./routes/info";
 function App() {
   return (
     <Routes>
-      <Route
-        path="/"
-        loader={(params) => {
-          return null;
-        }}
-        element={<Fridge />}
-      />
+      <Route path="/" element={<Fridge />} />
       <Route path="/info" element={<Info />} />
     </Routes>
   );
