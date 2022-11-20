@@ -61,6 +61,8 @@ public class FridgeManager : MonoBehaviour
         this.dateSlider.value = 10;
         this.AddUICancel();
         this.DeselectItem();
+        WebGLInput.mobileKeyboardSupport = true;
+        WebGLInput.captureAllKeyboardInput = true;
     }
 
     private void DateSliderChanged(float d)
