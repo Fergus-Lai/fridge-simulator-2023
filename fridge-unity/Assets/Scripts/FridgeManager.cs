@@ -24,21 +24,27 @@ public class FridgeManager : MonoBehaviour
     [SerializeField] private TMP_InputField inputFieldName;
     [SerializeField] private TMP_Dropdown typeDropdown;
     [SerializeField] private TMP_InputField inputFieldType;
+    [SerializeField] private UnityEngine.UI.Slider dateSlider;
+    [SerializeField] private TMP_Text dateText;
 
     private FoodType[] types;
     private FoodType unknownType;
+    [SerializeField] private TMP_Text detailsLabel;
+    [SerializeField] private GameObject detailsUI;
+    [SerializeField] private int maxDays = 30;
 
     void Awake()
     {
         Instance = this;
         shelves = new();
         foreach (var s in shelfList) { shelves.Add(s.shelfName, s); }
+
+        this.types = Resources.LoadAll<FoodType>("Food/").ToArray();
+        this.unknownType = Resources.Load<FoodType>("Food/Generic");
     }
 
     void Start()
     {
-        this.types = Resources.LoadAll<FoodType>("Food/").ToArray();
-        this.unknownType = Resources.Load<FoodType>("Food/Generic");
         #if UNITY_EDITOR
         string testStr = "{\"items\":[{\"id\":\"013279823u\",\"name\":\"Milk!!\",\"type\":\"milk\",\"shelf\":\"top\"},{\"id\":\"013279823u\",\"name\":\"Milk 2!!\",\"type\":\"milk\",\"shelf\":\"top\"},{\"id\":\"013279823u\",\"name\":\"idk!!\",\"type\":\"ooba\",\"shelf\":\"top\"},{\"id\":\"013279823u\",\"name\":\"Milk Soup!!\",\"type\":\"milk\",\"shelf\":\"top\"}]}";
         AddItems(testStr);
@@ -46,9 +52,20 @@ public class FridgeManager : MonoBehaviour
 
         this.shelfUI.SetActive(false);
         this.typeDropdown.ClearOptions();
-        this.typeDropdown.AddOptions(this.types.Select(f => f.id).ToList());
+        this.typeDropdown.AddOptions(this.types.Select(f => f == unknownType ? "other" : f.id).ToList());
         this.typeDropdown.onValueChanged.AddListener(TypeDropdownChanged);
+        this.dateSlider.onValueChanged.AddListener(DateSliderChanged);
+        this.dateSlider.minValue = 1;
+        this.dateSlider.maxValue = 30;
+        this.dateSlider.wholeNumbers = true;
+        this.dateSlider.value = 10;
         this.AddUICancel();
+        this.DeselectItem();
+    }
+
+    private void DateSliderChanged(float d)
+    {
+        this.dateText.text = $"{(int)dateSlider.value} days";
     }
 
     private void TypeDropdownChanged(int value)
@@ -102,18 +119,44 @@ public class FridgeManager : MonoBehaviour
         string typeName = type == unknownType ? this.inputFieldType.text : type.id;
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(typeName) || selectedShelf == null) return;
 
+        var date = DateTime.Today.Date.AddDays((int)dateSlider.value);
+        string dateStr = $"{date.Year:0000}-{date.Month:00}-{date.Day:00}";
+
         Guid guid = Guid.NewGuid();
         var item = new ItemSerialised()
         {
             id = guid.ToString(),
             name = name,
             type = typeName,
-            shelf = selectedShelf.name,
+            shelf = selectedShelf.shelfName,
+            expDate = dateStr,
         };
         AddItem(item);
         JSBindings.AddItem(item);
 
         AddUICancel();
+    }
+
+    private FridgeThingyScript selectedItem;
+
+    public void SelectItem(FridgeThingyScript thingy)
+    {
+        if (selectedItem != null) { return; }
+        selectedItem = thingy;
+        detailsUI.SetActive(true);
+        detailsLabel.text = $"ITEM\nNAME: {thingy.foodName}\nTYPE: {thingy.typeName}\nDATE: {thingy.date}";
+    }
+
+    public void DeselectItem()
+    {
+        selectedItem = null;
+        detailsUI.SetActive(false);
+    }
+
+    public void DeleteItem()
+    {
+        selectedItem?.Remove();
+        DeselectItem();
     }
 
     public void AddItems(string itemsJson) // called from JS
@@ -137,7 +180,12 @@ public class FridgeManager : MonoBehaviour
             }
         }
 
+        Debug.Log(types.Length);
+        Debug.Log(string.Join(", ", types.Select(x => x.ToString())));
+        Debug.Log(type);
+        Debug.Log(type.prefab);
         var go = Instantiate(type.prefab);
+        go.AddComponent<FridgeThingyScript>().Init(item);
         var shelf = shelves.GetValueOrDefault(item.shelf, null) ?? shelves.Values.First();
         go.transform.SetParent(shelf.transform);
         shelf.AlignChildren();
@@ -156,5 +204,6 @@ public class FridgeManager : MonoBehaviour
         public string name;
         public string type;
         public string shelf;
+        public string expDate;
     }
 }

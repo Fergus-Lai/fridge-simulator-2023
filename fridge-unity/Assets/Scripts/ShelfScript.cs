@@ -70,7 +70,7 @@ public class ShelfScript : MonoBehaviour, IPointerClickHandler
     {
         int row = idx % gridZ, col = idx / gridZ;
         if (col >= gridX) Debug.LogError("The whole world will now explode");
-        var bc = this.GetComponent<BoxCollider>();
+        var bc = this.GetComponent<Renderer>().localBounds;
         float xSize = bc.size.y;
         float zSize = bc.size.x;
         
