@@ -1,11 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 import express, { Request, Response } from "express";
+require("@google-cloud/debug-agent").start({
+  serviceContext: { enableCanary: true },
+});
 
 const app = express();
 const port = parseInt(process.env.PORT || "3000");
 const prisma = new PrismaClient();
 
 app.use(express.json());
+app.set("trust proxy", true);
 
 app.get("/user", async (req: Request, res: Response) => {
   const { id } = req.body;
@@ -65,10 +69,11 @@ app.get("/fridges", async (req: Request, res: Response) => {
 });
 
 app.post("/fridge", async (req: Request, res: Response) => {
-  let { id, name, quantity, type, expDate } = req.body;
+  let { id, name, quantity, type, expDate, shelf } = req.body;
   try {
     let item = await prisma.fridge.create({
       data: {
+        shelf,
         name,
         type,
         quantity: parseInt(quantity),
@@ -130,10 +135,11 @@ app.get("/freezers", async (req: Request, res: Response) => {
 });
 
 app.post("/freezer", async (req: Request, res: Response) => {
-  let { id, name, quantity, type, expDate } = req.body;
+  let { id, name, quantity, type, expDate, shelf } = req.body;
   try {
     let item = await prisma.freezer.create({
       data: {
+        shelf,
         name,
         type,
         quantity: parseInt(quantity),

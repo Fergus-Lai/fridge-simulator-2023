@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.ts"
+    "start": "node ./dist/app.js",
+    "build": "tsc -p ."
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "typescript": "^4.9.3"
   },
   "dependencies": {
+    "@google-cloud/debug-agent": "^7.1.0",
     "@prisma/client": "^4.6.1",
     "express": "^4.18.2"
   }
