@@ -5,7 +5,6 @@ from fridge import views
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('user/', views.user),
-    # path('freezer/',views.freezer)
+    path('freezer/',views.freezer),
     path('fridge/',views.fridge),
-    path('webpush/', include('webpush.urls'))
 ]

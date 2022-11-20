@@ -19,7 +19,6 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path("", include("fridge.urls")),
-    url(r'^webpush/', include('webpush.urls'))
+    path("", include("fridge.urls"))
 ]
 # [END gaeflex_py_django_local_static]

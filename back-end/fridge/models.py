@@ -24,13 +24,13 @@ class Freezer_Item(models.Model):
     id = models.CharField(max_length=200,primary_key=True)
     name = models.CharField(max_length=20)
     type = models.CharField(max_length=20)
-    exp_date = models.DateTimeField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    exp_date = models.DateField()
+    user = models.ForeignKey(User, related_name='freezer', on_delete=models.CASCADE)
 
 
 class Fridge_Item(models.Model):
     id = models.CharField(max_length=200,primary_key=True)
     name = models.CharField(max_length=20)
     type = models.CharField(max_length=20)
-    exp_date = models.DateTimeField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    exp_date = models.DateField()
+    user = models.ForeignKey(User,related_name='fridge', on_delete=models.CASCADE)

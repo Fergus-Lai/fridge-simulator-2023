@@ -14,11 +14,13 @@ def user(request):
     if request.method == "POST":
         id = uuid4()
         data["id"] = str(id)
+        data["fridge"] = []
+        data["freezer"] = []
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+        return JsonResponse(serializer.data)
+        # return JsonResponse(serializer.errors, status=400)
     try:
         user = User.objects.get(pk=data["id"])
     except User.DoesNotExist:
@@ -26,30 +28,22 @@ def user(request):
     if request.method == 'GET':
         serializer = UserSerializer(user)
         return JsonResponse(serializer.data, safe=False)
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = UserSerializer(user, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
 
 @csrf_exempt
 def fridge(request):
     data = JSONParser().parse(request)
 
     try:
-        user = User.objects.get(pk=data["id"])
+        user = User.objects.get(pk=data["user_id"])
     except User.DoesNotExist:
         return HttpResponse(status=404)
-
+    del data["user_id"]
     if request.method == "GET":
         items = Fridge_Item.objects.filter(user=user).values().order_by("exp_date")
         results = {k: v for k, v in enumerate(items)}
         return JsonResponse(results)
 
     elif request.method == 'PUT':
-        data = JSONParser().parse(request)
         serializer = FridgeSerializer(fridge, data=data)
         if serializer.is_valid():
             serializer.save()
@@ -59,7 +53,10 @@ def fridge(request):
     elif request.method == "POST":
         id = uuid4()
         data["id"] = str(id)
-        serializer = FridgeSerializer(data=data)
+        fridge = Fridge_Item.objects.create(user=user,data=data)
+        # Fridge_Item.save()
+        print(fridge)
+        serializer = FridgeSerializer(instance=fridge)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
@@ -71,7 +68,7 @@ def freezer(request):
     data = JSONParser().parse(request)
 
     try:
-        user = User.objects.get(pk=data["id"])
+        user = User.objects.get(pk=data["user_id"])
     except User.DoesNotExist:
         return HttpResponse(status=404)
 
@@ -91,8 +88,7 @@ def freezer(request):
     elif request.method == "POST":
         id = uuid4()
         data["id"] = str(id)
-        serializer = FreezerSerializer(data=data)
+        serializer = UserSerializer(instance=user, data=data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
+        return JsonResponse(serializer.data)

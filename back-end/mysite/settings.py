@@ -76,14 +76,8 @@ INSTALLED_APPS = (
     "django.contrib.staticfiles",
     "fridge",
     'rest_framework',
-    'webpush',
 )
 
-WEBPUSH_SETTINGS = {
-    "VAPID_PUBLIC_KEY": "BPWgGVqtJpzbD1PfyRzigUzvNBbsQi6CBTqe8ummcQ_yAebHq3pU-91HaQfLDgM028kohhaCUYXYVvAQZrVlv50",
-    "VAPID_PRIVATE_KEY": env("VAPID_KEY"),
-    "VAPID_ADMIN_EMAIL": "ferguslai724@gmail.com"
-}
 MIDDLEWARE = (
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
