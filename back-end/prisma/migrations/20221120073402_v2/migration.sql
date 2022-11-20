@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Fridge" ALTER COLUMN "expDate" SET DATA TYPE TEXT;
