@@ -35,7 +35,7 @@ public class ShelfScript : MonoBehaviour, IPointerClickHandler
             StartCoroutine(AnimateSlide(Vector3.zero, extendTime));
         }
     }
-
+    
     private IEnumerator AnimateSlide(Vector3 pos, float t)
     {
         pos += initialPos;

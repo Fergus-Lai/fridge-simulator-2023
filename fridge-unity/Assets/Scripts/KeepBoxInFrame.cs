@@ -77,20 +77,16 @@ public class KeepBoxInFrame : MonoBehaviour
             _ => Vector3.up,
         };
 
-        transform.position = SmoothDamp(transform.position, pos, ref smoothVel, MoveTime, MaxLerpSpeed);
+        transform.position = Vector3.SmoothDamp(transform.position, pos, ref smoothVel, MoveTime, MaxLerpSpeed);
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             Quaternion.LookRotation(bounds.center - transform.position, up),
             1f - Mathf.Pow(0.5f, RotationSpeed * Time.deltaTime));
     }
 
-    static Vector3 SmoothDamp(Vector3 current, Vector3 target, ref Vector3 currentVelocity, float smoothTime, float maxSpeed)
+    public void OnTestMessage(string v)
     {
-        Vector3 res = default;
-        res.x = Mathf.SmoothDamp(current.x, target.x, ref currentVelocity.x, smoothTime, maxSpeed);
-        res.y = Mathf.SmoothDamp(current.y, target.y, ref currentVelocity.y, smoothTime, maxSpeed);
-        res.z = Mathf.SmoothDamp(current.z, target.z, ref currentVelocity.z, smoothTime, maxSpeed);
-        return res;
+        Debug.Log("Test: " + v);
     }
 }
 

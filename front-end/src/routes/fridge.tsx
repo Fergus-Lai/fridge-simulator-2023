@@ -1,7 +1,7 @@
 import { Unity, useUnityContext } from "react-unity-webgl";
 
 export function Fridge() {
-  const { addEventListener, unityProvider, UNSAFE__unityInstance } = useUnityContext({
+  const { addEventListener, sendMessage, unityProvider,  } = useUnityContext({
     loaderUrl: "unity/Build.loader.js",
     dataUrl: "unity/Build.data",
     frameworkUrl: "unity/Build.framework.js",
@@ -13,6 +13,8 @@ export function Fridge() {
     console.log(data);
     }
     catch (e) {console.error(e);}
+
+    setTimeout(() => sendMessage("Main Camera", "OnTestMessage", "hello!!"), 2000);
 
   });
 
