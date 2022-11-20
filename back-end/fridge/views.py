@@ -8,6 +8,18 @@ from uuid import uuid4
 # TODO: Delete method for user
 # TODO: GET, POST, PUT, DELETE for Freezer Items and Fridge Items
 
+def update(instance, validated_data):
+    # data[fridge] = [{},{}]
+    fridge_items = validated_data.pop('fridge')
+    freezer_items = validated_data.pop('freezer')
+    for fridge in fridge_items:
+        Fridge_Item.objects.create(user=instance, **fridge)
+    for freezer in freezer_items:
+        Freezer_Item.objects.create(user=instance, **freezer)
+    instance.save()
+    return instance
+
+
 @csrf_exempt
 def user(request):
     data = JSONParser().parse(request)
@@ -68,7 +80,7 @@ def freezer(request):
     data = JSONParser().parse(request)
 
     try:
-        user = User.objects.get(pk=data["user_id"])
+        user = User.objects.get(pk=data["id"])
     except User.DoesNotExist:
         return HttpResponse(status=404)
 
@@ -87,8 +99,12 @@ def freezer(request):
 
     elif request.method == "POST":
         id = uuid4()
-        data["id"] = str(id)
-        serializer = UserSerializer(instance=user, data=data)
+        data['name'] = user.name
+        data['freezer'] = [x for x in user.freezer.values()]
+        data["fridge"][0]["id"] = str(id)
+        serializer = update(instance=user, data=data)
+        print("hi")
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
         return JsonResponse(serializer.data)

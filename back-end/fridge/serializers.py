@@ -32,11 +32,3 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         for freezer in freezer_items:
             Freezer_Item.objects.create(user=user, **freezer)
         return user
-    def update(self, instance, validated_data):
-        fridge_items = validated_data.pop('fridge')
-        freezer_items = validated_data.pop('freezer')
-        for fridge in fridge_items:
-            Fridge_Item.objects.create(user=instance, **fridge)
-        for freezer in freezer_items:
-            Freezer_Item.objects.create(user=instance, **freezer)
-        return instance
