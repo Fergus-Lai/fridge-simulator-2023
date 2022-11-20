@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Handles scooting in and out and aligns its children to a grid
+/// </summary>
 public class ShelfScript : MonoBehaviour, IPointerClickHandler
 {
-    public KeepBoxInFrame cameraController;
-    public GameObject mainFridge;
     bool isExtended = false;
     private Vector3 initialPos;
     public Vector3 extension;
@@ -14,8 +15,22 @@ public class ShelfScript : MonoBehaviour, IPointerClickHandler
     public float floorOffset = 0.05f;
     public int gridX = 10;
     public int gridZ = 4;
+    public string shelfName;
 
-    private List<GameObject> objects;
+    private bool _isFocused;
+    public bool IsFocused
+    {
+        get => _isFocused;
+        set
+        {
+            if (_isFocused != value)
+            {
+                _isFocused = value;
+                StopAllCoroutines();
+                StartCoroutine(AnimateSlide(value ? extension : Vector3.zero, extendTime));
+            }
+        }
+    }
 
     void Start()
     {
@@ -24,21 +39,7 @@ public class ShelfScript : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!isExtended)
-        {
-            //JSBindings.AddItem("test");
-            cameraController.target = this.gameObject;
-            cameraController.direction = ViewDirection.Top;
-            isExtended = true;
-            StartCoroutine(AnimateSlide(extension, extendTime));
-        }
-        else
-        {
-            cameraController.target = mainFridge;
-            cameraController.direction = ViewDirection.Front;
-            isExtended = false;
-            StartCoroutine(AnimateSlide(Vector3.zero, extendTime));
-        }
+        FridgeManager.Instance.ShelfClicked(this);
     }
     
     private IEnumerator AnimateSlide(Vector3 pos, float t)
@@ -68,7 +69,6 @@ public class ShelfScript : MonoBehaviour, IPointerClickHandler
     public void AlignToGrid(Transform t, int idx)
     {
         int row = idx % gridZ, col = idx / gridZ;
-        Debug.Log($"{idx} = {row}, {col}");
         if (col >= gridX) Debug.LogError("The whole world will now explode");
         var bc = this.GetComponent<BoxCollider>();
         float xSize = bc.size.y;

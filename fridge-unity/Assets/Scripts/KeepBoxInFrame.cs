@@ -83,11 +83,6 @@ public class KeepBoxInFrame : MonoBehaviour
             Quaternion.LookRotation(bounds.center - transform.position, up),
             1f - Mathf.Pow(0.5f, RotationSpeed * Time.deltaTime));
     }
-
-    public void OnTestMessage(string v)
-    {
-        Debug.Log("Test: " + v);
-    }
 }
 
 [System.Flags]
