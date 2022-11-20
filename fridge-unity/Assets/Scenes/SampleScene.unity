@@ -144,6 +144,9 @@ MonoBehaviour:
   mainFridge: {fileID: 1732392234}
   extension: {x: -0.42, y: 0, z: 0}
   extendTime: 0.2
+  floorOffset: 0.05
+  gridX: 10
+  gridZ: 4
 --- !u!65 &206198763
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -261,6 +264,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &287691252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287691249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43d2ef3ad40e52f408e8aeac5db8febd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!850595691 &288649570
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -590,6 +605,9 @@ MonoBehaviour:
   mainFridge: {fileID: 1732392234}
   extension: {x: -0.42, y: 0, z: 0}
   extendTime: 0.2
+  floorOffset: 0.05
+  gridX: 10
+  gridZ: 4
 --- !u!23 &1012978592
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -687,6 +705,9 @@ MonoBehaviour:
   mainFridge: {fileID: 1732392234}
   extension: {x: -0.42, y: 0, z: 0}
   extendTime: 0.2
+  floorOffset: 0.1
+  gridX: 6
+  gridZ: 3
 --- !u!1 &1732392234 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8391222552659086748, guid: f6dd21179b497fa48b1fe13a0106644e, type: 3}

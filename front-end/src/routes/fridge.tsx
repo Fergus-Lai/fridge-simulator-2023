@@ -1,22 +1,31 @@
+import { useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 
+function sendMsg(obj : string, func : string, arg : string)
+{
+  (window as any).unityInstance.SendMessage(obj, func, arg);
+}
+
 export function Fridge() {
-  const { addEventListener, sendMessage, unityProvider,  } = useUnityContext({
+  const { addEventListener, unityProvider } = useUnityContext({
     loaderUrl: "unity/Build.loader.js",
     dataUrl: "unity/Build.data",
     frameworkUrl: "unity/Build.framework.js",
     codeUrl: "unity/Build.wasm",
   });
 
-  addEventListener("AddItem", (data) => {
+  useEffect(() => 
+  {
+    addEventListener("AddItem", (data) => {
     try {
-    console.log(data);
+      console.log(data);
     }
     catch (e) {console.error(e);}
-
-    setTimeout(() => sendMessage("Main Camera", "OnTestMessage", "hello!!"), 2000);
-
+    console.log();
+    setTimeout(() => sendMsg("Main Camera", "OnTestMessage", "hello!!"), 2000);
+  })
+    
   });
-
+  
   return <Unity unityProvider={unityProvider} className="unity-canvas" />;
 }

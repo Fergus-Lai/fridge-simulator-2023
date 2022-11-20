@@ -11,6 +11,11 @@ public class ShelfScript : MonoBehaviour, IPointerClickHandler
     private Vector3 initialPos;
     public Vector3 extension;
     public float extendTime = 0.5f;
+    public float floorOffset = 0.05f;
+    public int gridX = 10;
+    public int gridZ = 4;
+
+    private List<GameObject> objects;
 
     void Start()
     {
@@ -21,7 +26,7 @@ public class ShelfScript : MonoBehaviour, IPointerClickHandler
     {
         if (!isExtended)
         {
-            JSBindings.AddItem("test");
+            //JSBindings.AddItem("test");
             cameraController.target = this.gameObject;
             cameraController.direction = ViewDirection.Top;
             isExtended = true;
@@ -48,5 +53,32 @@ public class ShelfScript : MonoBehaviour, IPointerClickHandler
         }
 
         transform.localPosition = pos;
+    }
+
+    [ContextMenu("Align Children")]
+    public void AlignChildren()
+    {
+        int i = 0;
+        foreach (Transform ch in this.transform)
+        {
+            AlignToGrid(ch, i++);
+        }
+    }
+
+    public void AlignToGrid(Transform t, int idx)
+    {
+        int row = idx % gridZ, col = idx / gridZ;
+        Debug.Log($"{idx} = {row}, {col}");
+        if (col >= gridX) Debug.LogError("The whole world will now explode");
+        var bc = this.GetComponent<BoxCollider>();
+        float xSize = bc.size.y;
+        float zSize = bc.size.x;
+        
+        float xInc = xSize / gridX, zInc = zSize / gridZ;
+        Vector3 pos = bc.center - (bc.size * 0.5f);
+        pos.z += floorOffset;
+        pos.x += zInc * (0.5f + row);
+        pos.y += xInc * (0.5f + col);
+        t.localPosition = pos;
     }
 }
