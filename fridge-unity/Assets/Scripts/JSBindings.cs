@@ -10,6 +10,8 @@ public static class JSBindings
 
     public static void AddItem(FridgeManager.ItemSerialised item)
     {
+        #if !UNITY_EDITOR
         AddItem(UnityEngine.JsonUtility.ToJson(item));
+        #endif
     }
 }
