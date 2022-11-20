@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 
-const url : string = "http://localhost:8080/";
+const url : string = "http://localhost:3000/";
 
 function sendMsg(obj : string, func : string, arg : string)
 {
@@ -11,7 +11,7 @@ function sendMsg(obj : string, func : string, arg : string)
 async function removeItem(itemId : string)
 {
   console.log("Removing " + itemId);
-  let resp = await fetch(url + "/fridge",
+  let resp = await fetch(url + "fridge",
   {
     method: "DEL",
     body: JSON.stringify({id: itemId}),
@@ -23,7 +23,7 @@ async function removeItem(itemId : string)
 async function addItem(name : string, type : string, id : string, shelf : string, date : string)
 {
   console.log("Adding item " + name + " type " + type + " id " + id + " shelf " + shelf + " date " + date);
-  let resp = await fetch(url + "/fridge",
+  let resp = await fetch(url + "fridge",
   {
     method: "POST",
     body: JSON.stringify({name: name, id: id, type: type, expDate: date, quantity: 1}),
@@ -34,7 +34,7 @@ async function addItem(name : string, type : string, id : string, shelf : string
 
 async function init(addEventListener : any)
 {
-  let resp = await fetch(url + "/fridges");
+  let resp = await fetch(url + "fridges");
 
   if (resp.ok)
   {
